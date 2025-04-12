@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Zodiak</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    .result {
+      margin-top: 20px;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    img {
+      margin-top: 10px;
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Form Zodiak</h2>
+  <label>Nama:</label>
+  <input type="text" id="nama">
+  <label>Umur:</label>
+  <input type="number" id="umur">
+  <label>Kelas:</label>
+  <input type="text" id="kelas">
+  <label>Tanggal Lahir:</label>
+  <select id="tanggal"></select>
+  <select id="bulan"></select>
+  <select id="tahun"></select>
+  <button onclick="cekZodiak()">Cek Zodiak</button>
+  <div class="result" id="hasil" style="display:none">
+    <p id="output"></p>
+    <img id="zodiakImg" src="" alt="Zodiak">
+  </div>
+  <script>
+    const zodiakList = [
+      {start: [21, 3], end: [19, 4], name: "Aries"},
+      {start: [20, 4], end: [20, 5], name: "Taurus"},
+      {start: [21, 5], end: [20, 6], name: "Gemini"},
+      {start: [21, 6], end: [22, 7], name: "Cancer"},
+      {start: [23, 7], end: [22, 8], name: "Leo"},
+      {start: [23, 8], end: [22, 9], name: "Virgo"},
+      {start: [23, 9], end: [22, 10], name: "Libra"},
+      {start: [23, 10], end: [21, 11], name: "Scorpio"},
+      {start: [22, 11], end: [21, 12], name: "Sagitarius"},
+      {start: [22, 12], end: [19, 1], name: "Capricorn"},
+      {start: [20, 1], end: [18, 2], name: "Aquarius"},
+      {start: [19, 2], end: [20, 3], name: "Pisces"}
+    ];
+    function tentukanZodiak(tgl, bln) {
+      for (let z of zodiakList) {
+        let [sT, sB] = z.start;
+        let [eT, eB] = z.end;
+        if ((tgl >= sT && bln === sB) || (tgl <= eT && bln === eB)) {
+          return z.name;
+        }
+      }
+      return "Tidak diketahui";
+    }
+    function cekZodiak() {
+      const nama = document.getElementById('nama').value;
+      const umur = document.getElementById('umur').value;
+      const kelas = document.getElementById('kelas').value;
+      const tanggal = parseInt(document.getElementById('tanggal').value);
+      const bulan = parseInt(document.getElementById('bulan').value);
+      const tahun = parseInt(document.getElementById('tahun').value);
+      const zodiak = tentukanZodiak(tanggal, bulan);
+      document.getElementById('hasil').style.display = 'block';
+      document.getElementById('output').innerText =
+        `Halo ${nama}!\nZodiak kamu adalah ${zodiak}.`;
+      document.getElementById('zodiakImg').src = `https://dummyimage.com/100x100/cccccc/000000&text=${zodiak}`;
+    }
+    const tanggalSelect = document.getElementById('tanggal');
+    const bulanSelect = document.getElementById('bulan');
+    const tahunSelect = document.getElementById('tahun');
+    for (let i = 1; i <= 31; i++) tanggalSelect.innerHTML += `<option value="${i}">${i}</option>`;
+    for (let i = 1; i <= 12; i++) bulanSelect.innerHTML += `<option value="${i}">${i}</option>`;
+    for (let i = 1980; i <= new Date().getFullYear(); i++) tahunSelect.innerHTML += `<option value="${i}">${i}</option>`;
+  </script>
+</body>
+</html>
